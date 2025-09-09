@@ -1,16 +1,20 @@
 cmake_minimum_required(VERSION 3.31)
-project(BioCrowdsCP C)
+project(BioCrowdsCP CXX)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(BioCrowdsCP main.c
-        world.c
+add_executable(BioCrowdsCP
+        main.cpp
+        World.cpp
         world.h
-        Vector3.c
+        Vector3.cpp
         Vector3.h
-        Marker.c
+        Marker.cpp
         Marker.h
+        Cell.cpp
         Cell.h
-        Cell.c
+        Agent.cpp
         Agent.h
-        Agent.c)
+        World.cpp
+)

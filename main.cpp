@@ -10,16 +10,14 @@
 
 int main() {
     srand(1);
-    World world;
+    World* world = new World(20, 20);
 
-    initWorld(&world, 20, 20);
+    printf("Cells: %d\n", world->getCellsCount());
+    printf("Markers: %d\n", world->getMarkersCount());
 
-    printf("Cells: %d\n", world.cellsCount);
-    printf("Markers: %d\n", world.markersCount);
+    world->exportCells("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/cells.csv");
 
-    exportCells(&world, "C:/Users/Rubens/CLionProjects/BioCrowdsCP/output/cells.csv");
-
-    exportMarkers(&world, "C:/Users/Rubens/CLionProjects/BioCrowdsCP/output/markers.csv");
+    world->exportMarkers("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/markers.csv");
 
     return 0;
 
