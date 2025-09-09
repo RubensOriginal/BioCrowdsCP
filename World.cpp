@@ -76,6 +76,11 @@ int World::getMarkersCount() {
     return this->markers.size();
 }
 
+Marker *World::getMarker(int i)
+{
+    return this->markers[i];
+}
+
 // -----------------------------------------------
 
 

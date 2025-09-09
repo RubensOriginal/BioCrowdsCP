@@ -31,6 +31,9 @@ private:
 public:
     Agent(Vector3 position, Vector3 goalPosition, Cell* cell, World* world);
 
+    float GetF(int pRelationIndex);
+    void FindNearAuxins();
+
     void FindCell();
     void CheckAuxins(float *pDistToCellSqr, Cell* cell);
     bool isAtGoal();

@@ -13,6 +13,38 @@ Agent::Agent(Vector3 position, Vector3 goalPosition, Cell *cell, World *world) {
     this->currentCell = cell;
 }
 
+float Agent::GetF(int pRelationIndex)
+{
+    Vector3 vecZero = (Vector3){0.0f, 0.0f, 0.0f};
+
+    float Ymodule = vector3_distance(this->world->getMarker(pRelationIndex)->position, vecZero);
+
+    float Xmodule = 
+}
+
+void Agent::FindNearAuxins()
+{
+    this->markers.erase(this->markers.begin(), this->markers.end());
+
+    for (int i = 0; i < this->world->getMarkersCount(); i++) {
+        Marker* marker = this->world->getMarker(i);
+
+        float dis = vector3_magnitude(vector3_sub(this->position, marker->position));
+
+        if (dis < marker->minDistance && dis <= AGENT_RADIUS * AGENT_RADIUS) {
+
+            if (marker->isTaken) {
+                marker->agent->markers.remove(marker);
+            }
+
+            marker->isTaken = true;
+            marker->agent = this;
+            marker->minDistance = dis;
+            this->markers.push_back(marker);
+        }
+    }
+}
+
 void Agent::FindCell() {
 
     float distanceToCellSqr = vector3_magnitude(vector3_sub(this->position, this->currentCell->getPosition()));

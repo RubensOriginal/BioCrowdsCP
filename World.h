@@ -50,6 +50,8 @@ public:
     int getCellsCount();
     int getMarkersCount();
 
+    Marker* getMarker(int i);
+
     void exportCells(const char* filename);
     void exportMarkers(const char* filename);
 };

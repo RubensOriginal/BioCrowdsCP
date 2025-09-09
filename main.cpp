@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "world.h"
+#include "World.h"
 #include "Agent.h"
 
 #define SIMULATION_STEPS 100
