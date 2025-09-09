@@ -31,7 +31,7 @@ typedef struct World {
 void initWorld(World* world, int x, int z);
 void createCells(World* world);
 void createMarkers(World* world);
-void populateCell(World* world, Cell* cell, int maxMarkers);
+void populateCell(World* world, int c, int maxMarkers);
 
 float random_range(float min, float max);
 void exportCells(World *world, const char* filename);

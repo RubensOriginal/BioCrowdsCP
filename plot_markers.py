@@ -1,43 +1,44 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-# Carrega os arquivos CSV
-df_markers = pd.read_csv("./output/markers.csv")
-df_cells = pd.read_csv("./output/cells.csv")
+# Lê os arquivos
+df_markers = pd.read_csv("./output/markers.csv")  # marker_x, marker_z
+df_cells = pd.read_csv("./output/cells.csv")      # cell_x, cell_z
 
+CELL_SIZE = 2  # cada célula é 2x2
+
+# Cria a figura base
 fig = go.Figure()
 
-# Adiciona as células como quadrados atrás dos markers
-for _, row in df_cells.iterrows():
-    fig.add_shape(
-        type="rect",
-        x0=row["cell_x"], y0=row["cell_z"],
-        x1=row["cell_x"] + 2,  # largura da célula (ajuste se necessário)
-        y1=row["cell_z"] + 2,  # altura da célula (ajuste se necessário)
-        line=dict(color="LightGray", width=1),
-        fillcolor="LightGray",
-        layer="below"  # coloca as células atrás dos markers
-    )
-
-# Adiciona os markers como pontos, sempre na frente
+# Adiciona os pontos (markers)
 fig.add_trace(go.Scatter(
-    x=df_markers["x"],
-    y=df_markers["y"],
+    x=df_markers["marker_x"],
+    y=df_markers["marker_z"],
     mode="markers",
-    marker=dict(size=6, color="blue"),
-    text=[f"Cell=({cx},{cy}) Marker={mid}"
-          for cx, cy, mid in zip(df_markers["cell_x"],
-                                 df_markers["cell_y"],
-                                 df_markers["marker_id"])],
-    hoverinfo="text"
+    marker=dict(size=4, color="red"),
+    name="Markers"
 ))
 
+# Adiciona as células como retângulos
+for _, row in df_cells.iterrows():
+    x0, z0 = row["cell_x"] * CELL_SIZE, row["cell_z"] * CELL_SIZE
+    x1, z1 = x0 + CELL_SIZE, z0 + CELL_SIZE
+
+    fig.add_shape(
+        type="rect",
+        x0=x0, y0=z0,
+        x1=x1, y1=z1,
+        line=dict(color="blue", width=1),
+        fillcolor="rgba(0,0,255,0.1)"  # azul transparente
+    )
+
+# Configuração do layout
 fig.update_layout(
-    title="World Grid com Markers",
-    xaxis=dict(scaleanchor="y", title="X"),
-    yaxis=dict(title="Y"),
-    width=600,
-    height=600
+    title="Markers e Células 2x2 (escaladas)",
+    xaxis_title="X",
+    yaxis_title="Z",
+    xaxis=dict(scaleanchor="y", scaleratio=1),  # mantém proporção
+    showlegend=True
 )
 
 fig.show()

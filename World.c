@@ -10,6 +10,7 @@ void initWorld(World *w, int x, int z) {
     w->markersCount = 0;
 
     createCells(w);
+    createMarkers(w);
 }
 
 void createCells(World *world) {
@@ -43,19 +44,21 @@ void createMarkers(World *world) {
 
         cell->markers = (Marker**)malloc(maxMarkersPerCell * sizeof(Marker*));
 
-        populateCell(world, cell, maxMarkersPerCell);
+        populateCell(world, c, maxMarkersPerCell);
     }
 
 }
 
-void populateCell(World* world, Cell *cell, int maxMarkers) {
-    float cellHalfSize = 1.0f * (1.0f - (MARKER_RADIUS/2.f));
+void populateCell(World* world, int c, int maxMarkers) {
+    // float cellHalfSize = 1.0f * (1.0f - (MARKER_RADIUS/2.f));
+    Cell *cell = world->cells[c];
+
 
     for (int i = 0; i < maxMarkers; i++) {
         Marker* marker = malloc(sizeof(Marker));
 
-        float x = random_range(-cellHalfSize, cellHalfSize);
-        float z = random_range(-cellHalfSize, cellHalfSize);
+        float x = random_range(0, 2);
+        float z = random_range(0, 2);
 
         marker->position = (Vector3){x + (cell->X * 2), 0,z + (cell->Z * 2)};
         marker->cell = cell;
@@ -109,7 +112,7 @@ void exportMarkers(World *world, const char* filename) {
     for (int i = 0; i < world->cellsCount; i++) {
         Cell *cell = world->cells[i];
         for (int j = 0; cell->markersCount > j; j++) {
-            printf("i = %d | j = %d\n", i, j);
+            // printf("i = %d | j = %d\n", i, j);
             Marker* marker = cell->markers[j];
             fprintf(file, "%.3f,%.3f\n",
                     marker->position.x, marker->position.z);
