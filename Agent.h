@@ -25,12 +25,16 @@ private:
 
     World* world{};
 
+    bool isDenW;
+    float denW;
+
     Vector3 rotation{}; // movement vector
     Vector3 goalPosition{};
     Vector3 dirAgentGoal{};
 public:
     Agent(Vector3 position, Vector3 goalPosition, Cell* cell, World* world);
 
+    float GetW(int relationIndex);
     float GetF(int pRelationIndex);
     void FindNearAuxins();
 
