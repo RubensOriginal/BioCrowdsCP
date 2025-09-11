@@ -9,6 +9,8 @@
 
 // typedef struct World World;
 
+
+
 class World;
 class Cell;
 class Marker;
@@ -50,6 +52,8 @@ public:
     bool isAtGoal();
 
     void removeMarker(Marker* marker);
+
+    float getDistanceToGoal();
 };
 
 #endif

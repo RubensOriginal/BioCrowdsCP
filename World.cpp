@@ -11,6 +11,20 @@ World::World(int x, int z) {
     this->createMarkers();
 }
 
+World::~World() {
+    for (Cell* cell : this->cells) {
+        delete cell;
+    }
+
+    for (Marker* marker : this->markers) {
+        delete marker;
+    }
+
+    for (Agent* agent : this->agents) {
+        delete agent;
+    }
+}
+
 void World::createCells() {
 
     this->cellsCount = (static_cast<int>(this->dimension.x) / 2)  * (static_cast<int>(this->dimension.z) / 2);
@@ -68,6 +82,16 @@ void World::populateCell(int c, int maxMarkers) {
     }
 }
 
+void World::createAgents(int numAgents, Vector3 goal) {
+    for (int a = 0; a < numAgents; a++) {
+        float x = random_range(0.0f, 1.0f);
+        float z = random_range(0.0f, 1.0f);
+
+        Agent* agent = new Agent(Vector3{x, 0.0f, z}, Vector3{20.0f, 0.0f, 20.0f}, nullptr, this);
+        this->agents.push_back(agent);
+    }
+}
+
 void World::update() {
     for (auto & marker : this->markers) {
         marker->ResetMarker();
@@ -97,6 +121,16 @@ int World::getCellsCount() {
 
 int World::getMarkersCount() {
     return this->markers.size();
+}
+
+bool World::allAgentsNextToGoal() {
+    for (Agent* agent : this->agents) {
+        if (!agent->isAtGoal()) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 Marker *World::getMarker(int i)
@@ -152,6 +186,16 @@ void World::exportMarkers(const char* filename) {
     }
 
     fclose(file);
+}
+
+float World::getSumOfDistances() {
+    float sum = 0;
+
+    for (Agent* agent : this->agents) {
+        sum += agent->getDistanceToGoal();
+    }
+
+    return sum;
 }
 
 

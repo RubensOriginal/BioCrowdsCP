@@ -38,24 +38,30 @@ private:
     std::vector<Cell*> cells;
     std::vector<Marker*> markers;
 
-    static float random_range(float min, float max);
 
 public:
     World(int X, int Z);
+    ~World();
 
     void createCells();
     void createMarkers();
     void populateCell(int c, int maxMarkers);
+    void createAgents(int numAgents, Vector3 goal);
 
     void update();
 
     int getCellsCount();
     int getMarkersCount();
+    bool allAgentsNextToGoal();
 
     Marker* getMarker(int i);
 
+    static float random_range(float min, float max);
+
     void exportCells(const char* filename);
     void exportMarkers(const char* filename);
+
+    float getSumOfDistances();
 };
 
 

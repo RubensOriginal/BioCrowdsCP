@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <cmath>
+#include <cstdio>
 
 #include "World.h"
 
@@ -15,6 +16,7 @@ Agent::Agent(Vector3 position, Vector3 goalPosition, Cell *cell, World *world) {
 
     this->isDenW = false;
     this->denW = 0.0f;
+    this->maxSpeed = 1.5f;
 }
 
 void Agent::clear() {
@@ -22,11 +24,13 @@ void Agent::clear() {
     this->markers.clear();
     this->isDenW = false;
     this->rotation = Vector3(0.0f, 0.0f, 0.0f);
+
     this->dirAgentGoal = this->goalPosition - this->position;
 
 }
 
 void Agent::movimentStep(float _timeStep) {
+    printf("Distancia: %f | Velocity: %f\n", vector3_distance(this->velocity * _timeStep, Vector3{0,0,0}), vector3_sqr_magnitude(this->velocity));
     if (vector3_sqr_magnitude(this->velocity) > 0.0f) {
         this->position = this->position + this->velocity * _timeStep;
     }
@@ -40,6 +44,8 @@ void Agent::calculateDirection() {
         float w = GetW(marker);
         if (this->denW < 0.0001f)
             w = 0.0f;
+
+        printf("%.4f | %.4f | %.4f | %.4f\n", vector3_distance(this->rotation, Vector3{0, 0, 0}), vector3_distance((marker->position - this->position), Vector3{0, 0, 0}), w, this->maxSpeed);
 
         this->rotation = this->rotation + ((marker->position - this->position) * w * this->maxSpeed);
     }
@@ -56,7 +62,7 @@ void Agent::calculateVelocity() {
     }
 
     if (moduleM > 0.0001f) {
-        this->velocity = s (this->rotation / moduleM);
+        this->velocity = (this->rotation / moduleM) * s;
     } else {
         this->velocity = Vector3(0.0f, 0.0f, 0.0f);
     }
@@ -89,7 +95,7 @@ float Agent::GetF(Marker* marker)
 
     float dot = vector3_dot(marker->position, vector3_normalize(this->goalPosition));
 
-    if (Ymodule > 0.00001f)
+    if (Ymodule < 0.00001f)
         return 0.0f;
 
     return static_cast<float>((1.0 / (1.0 + Ymodule)) * (1.0 + ((dot) / (Xmodule * Ymodule))));
@@ -156,13 +162,17 @@ void Agent::CheckAuxins(float *pDistToCellSqr, Cell* cell) {
 }
 
 bool Agent::isAtGoal() {
-    return vector3_distance(this->position, this->goalPosition) <= GOAL_DISTANCE_THRESHOLD;
+    return this->getDistanceToGoal() <= GOAL_DISTANCE_THRESHOLD;
 }
 
 
 
 void Agent::removeMarker(Marker *marker) {
     this->markers.remove(marker);
+}
+
+float Agent::getDistanceToGoal() {
+    return vector3_distance(this->position, this->goalPosition);
 }
 
 

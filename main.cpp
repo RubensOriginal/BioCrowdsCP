@@ -15,9 +15,22 @@ int main() {
     printf("Cells: %d\n", world->getCellsCount());
     printf("Markers: %d\n", world->getMarkersCount());
 
-    world->exportCells("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/cells.csv");
+    // world->exportCells("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/cells.csv");
+    // world->exportMarkers("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/markers.csv");
 
-    world->exportMarkers("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/markers.csv");
+    world->createAgents(1, Vector3{20.0f, 0.0f, 20.0f});
+
+    int count = 0;
+
+    while (!world->allAgentsNextToGoal()) {
+        printf("Count: %d | Distance: %.2f\n", count, world->getSumOfDistances());
+        world->update();
+
+        count++;
+        // break;
+    }
+
+    delete world;
 
     return 0;
 
