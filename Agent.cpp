@@ -1,6 +1,7 @@
 #include "Agent.h"
 
 #include <cstdlib>
+#include <cmath>
 
 #include "World.h"
 
@@ -16,14 +17,60 @@ Agent::Agent(Vector3 position, Vector3 goalPosition, Cell *cell, World *world) {
     this->denW = 0.0f;
 }
 
-float Agent::GetW(int relationIndex) {
-    float fValue = GetF(relationIndex);
+void Agent::clear() {
+    this->denW = 0.0f;
+    this->markers.clear();
+    this->isDenW = false;
+    this->rotation = Vector3(0.0f, 0.0f, 0.0f);
+    this->dirAgentGoal = this->goalPosition - this->position;
+
+}
+
+void Agent::movimentStep(float _timeStep) {
+    if (vector3_sqr_magnitude(this->velocity) > 0.0f) {
+        this->position = this->position + this->velocity * _timeStep;
+    }
+}
+
+void Agent::calculateDirection() {
+    for (Marker* marker : this->markers){
+    // for (int k = 0; k < this->markers.size(); k++) {
+
+
+        float w = GetW(marker);
+        if (this->denW < 0.0001f)
+            w = 0.0f;
+
+        this->rotation = this->rotation + ((marker->position - this->position) * w * this->maxSpeed);
+    }
+}
+
+void Agent::calculateVelocity() {
+
+    float moduleM = vector3_distance(this->rotation, Vector3{0.0f, 0.0f, 0.0f});
+
+    float s = moduleM * M_PI;
+
+    if (s > this->maxSpeed) {
+        s = this->maxSpeed;
+    }
+
+    if (moduleM > 0.0001f) {
+        this->velocity = s (this->rotation / moduleM);
+    } else {
+        this->velocity = Vector3(0.0f, 0.0f, 0.0f);
+    }
+}
+
+
+float Agent::GetW(Marker* marker) {
+    float fValue = GetF(marker);
 
     if (!this->isDenW) {
         this->denW = 0;
 
-        for(int k = 0; k < this->world->getCellsCount(); k++) {
-            this->denW += GetF(k);
+        for (Marker* m : this->markers){
+            this->denW += GetF(m);
         }
 
         this->isDenW = true;
@@ -32,15 +79,15 @@ float Agent::GetW(int relationIndex) {
     return fValue/denW;
 }
 
-float Agent::GetF(int pRelationIndex)
+float Agent::GetF(Marker* marker)
 {
     Vector3 vecZero = (Vector3){0.0f, 0.0f, 0.0f};
 
-    float Ymodule = vector3_distance(this->world->getMarker(pRelationIndex)->position, vecZero);
+    float Ymodule = vector3_distance(marker->position, vecZero);
 
     float Xmodule = vector3_magnitude(vector3_normalize(this->goalPosition));
 
-    float dot = vector3_dot(this->world->getMarker(pRelationIndex)->position, vector3_normalize(this->goalPosition));
+    float dot = vector3_dot(marker->position, vector3_normalize(this->goalPosition));
 
     if (Ymodule > 0.00001f)
         return 0.0f;

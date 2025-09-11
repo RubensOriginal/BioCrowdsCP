@@ -68,6 +68,29 @@ void World::populateCell(int c, int maxMarkers) {
     }
 }
 
+void World::update() {
+    for (auto & marker : this->markers) {
+        marker->ResetMarker();
+    }
+
+    for (int a = 0; a < this->agents.size(); a++) {
+        this->agents[a]->FindNearAuxins();
+    }
+
+    for (int a = 0; a < this->agents.size(); a++) {
+        Agent* agent = this->agents[a];
+
+        agent->calculateDirection();
+        agent->calculateVelocity();
+
+        agent->movimentStep(SIMULATION_TIME_STEP);
+    }
+
+    for (int a = 0; a < this->agents.size(); a++) {
+        this->agents[a]->clear();
+    }
+}
+
 int World::getCellsCount() {
     return this->cells.size();
 }

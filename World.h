@@ -47,6 +47,8 @@ public:
     void createMarkers();
     void populateCell(int c, int maxMarkers);
 
+    void update();
+
     int getCellsCount();
     int getMarkersCount();
 

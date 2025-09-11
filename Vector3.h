@@ -1,5 +1,6 @@
 #ifndef VECTOR3_H
 #define VECTOR3_H
+#include "Agent.h"
 
 struct Vector3{
     float x;
@@ -24,9 +25,11 @@ struct Vector3{
     Vector3 operator*(const float a) const {
         return Vector3(this->x * a, this->y * a, this->z * a);
     }
-};
 
-Vector3 vector3_normalize(Vector3 a);
+    Vector3 operator/(const float a) const {
+        return Vector3(this->x / a, this->y / a, this->z / a);
+    }
+};
 
 float vector3_distance(Vector3 a, Vector3 b);
 float vector3_sqr_magnitude(Vector3 a);

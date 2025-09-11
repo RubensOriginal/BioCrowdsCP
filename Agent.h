@@ -34,8 +34,15 @@ private:
 public:
     Agent(Vector3 position, Vector3 goalPosition, Cell* cell, World* world);
 
-    float GetW(int relationIndex);
-    float GetF(int pRelationIndex);
+    void clear();
+
+    void movimentStep(float _timeStep);
+
+    void calculateDirection();
+    void calculateVelocity();
+
+    float GetW(Marker* marker);
+    float GetF(Marker* marker);
     void FindNearAuxins();
 
     void FindCell();
