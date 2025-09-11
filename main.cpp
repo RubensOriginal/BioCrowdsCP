@@ -22,14 +22,14 @@ int main() {
     // world->exportCells("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/cells.csv");
     // world->exportMarkers("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/markers.csv");
 
-    world->createAgents(10, Vector3{99.0f, 0.0f, 99.0f});
+    world->createAgents(1, Vector3{99.0f, 0.0f, 99.0f});
 
     int count = 0;
 
     starttime = omp_get_wtime(); 
 
     while (!world->allAgentsNextToGoal()) {
-        // printf("Count: %d | Distance: %.2f\n", count, world->getSumOfDistances());
+        printf("Count: %d | Distance: %.2f\n", count, world->getSumOfDistances());
         world->update();
 
         count++;

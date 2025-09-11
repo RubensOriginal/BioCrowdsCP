@@ -87,7 +87,7 @@ void World::createAgents(int numAgents, Vector3 goal) {
         float x = random_range(0.0f, 1.0f);
         float z = random_range(0.0f, 1.0f);
 
-        Agent* agent = new Agent(Vector3{x, 0.0f, z}, Vector3{20.0f, 0.0f, 20.0f}, nullptr, this);
+        Agent* agent = new Agent(Vector3{x, 0.0f, z}, goal, nullptr, this);
         this->agents.push_back(agent);
     }
 }
