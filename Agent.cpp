@@ -30,7 +30,8 @@ void Agent::clear() {
 }
 
 void Agent::movimentStep(float _timeStep) {
-    printf("Distancia: %f | Velocity: %f\n", vector3_distance(this->velocity * _timeStep, Vector3{0,0,0}), vector3_sqr_magnitude(this->velocity));
+    // printf("Distancia: %f | Velocity: %f\n", vector3_distance(this->velocity * _timeStep, Vector3{0,0,0}), vector3_sqr_magnitude(this->velocity));
+    // printf("Distancia: %f | Velocity: %f\n", vector3_distance(this->position, this->goalPosition), vector3_sqr_magnitude(this->velocity));
     if (vector3_sqr_magnitude(this->velocity) > 0.0f) {
         this->position = this->position + this->velocity * _timeStep;
     }
@@ -45,7 +46,7 @@ void Agent::calculateDirection() {
         if (this->denW < 0.0001f)
             w = 0.0f;
 
-        printf("%.4f | %.4f | %.4f | %.4f\n", vector3_distance(this->rotation, Vector3{0, 0, 0}), vector3_distance((marker->position - this->position), Vector3{0, 0, 0}), w, this->maxSpeed);
+        // printf("%.4f | %.4f | %.4f | %.4f\n", vector3_distance(this->rotation, Vector3{0, 0, 0}), vector3_distance((marker->position - this->position), Vector3{0, 0, 0}), w, this->maxSpeed);
 
         this->rotation = this->rotation + ((marker->position - this->position) * w * this->maxSpeed);
     }
@@ -82,18 +83,18 @@ float Agent::GetW(Marker* marker) {
         this->isDenW = true;
     }
 
-    return fValue/denW;
+    return fValue/this->denW;
 }
 
 float Agent::GetF(Marker* marker)
 {
     Vector3 vecZero = (Vector3){0.0f, 0.0f, 0.0f};
 
-    float Ymodule = vector3_distance(marker->position, vecZero);
+    float Ymodule = vector3_distance(marker->position - this->position, vecZero);
 
-    float Xmodule = vector3_magnitude(vector3_normalize(this->goalPosition));
+    float Xmodule = vector3_magnitude(vector3_normalize(this->dirAgentGoal));
 
-    float dot = vector3_dot(marker->position, vector3_normalize(this->goalPosition));
+    float dot = vector3_dot(marker->position - this->position, vector3_normalize(this->dirAgentGoal));
 
     if (Ymodule < 0.00001f)
         return 0.0f;

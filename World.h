@@ -9,7 +9,7 @@
 #define AGENT_RADIUS 1.0f
 #define MARKER_RADIUS 0.1f
 #define MARKER_DENSITY 0.5f
-#define GOAL_DISTANCE_THRESHOLD 0.25f
+#define GOAL_DISTANCE_THRESHOLD 0.5f
 
 #define MAX_AGENTS 20
 
@@ -47,6 +47,8 @@ public:
     void createMarkers();
     void populateCell(int c, int maxMarkers);
     void createAgents(int numAgents, Vector3 goal);
+
+    void removeAgents();
 
     void update();
 

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <omp.h>
+
 #include "World.h"
 #include "Agent.h"
 
@@ -10,7 +12,9 @@
 
 int main() {
     srand(1);
-    World* world = new World(20, 20);
+    World* world = new World(100, 100);
+
+    double starttime, stoptime;
 
     printf("Cells: %d\n", world->getCellsCount());
     printf("Markers: %d\n", world->getMarkersCount());
@@ -18,17 +22,22 @@ int main() {
     // world->exportCells("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/cells.csv");
     // world->exportMarkers("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/markers.csv");
 
-    world->createAgents(1, Vector3{20.0f, 0.0f, 20.0f});
+    world->createAgents(10, Vector3{99.0f, 0.0f, 99.0f});
 
     int count = 0;
 
+    starttime = omp_get_wtime(); 
+
     while (!world->allAgentsNextToGoal()) {
-        printf("Count: %d | Distance: %.2f\n", count, world->getSumOfDistances());
+        // printf("Count: %d | Distance: %.2f\n", count, world->getSumOfDistances());
         world->update();
 
         count++;
-        // break;
     }
+
+    stoptime = omp_get_wtime();
+	
+    printf("\nTempo de execucao: %3.2f segundos\n\n", stoptime-starttime);
 
     delete world;
 

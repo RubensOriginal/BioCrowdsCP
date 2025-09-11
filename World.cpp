@@ -92,6 +92,18 @@ void World::createAgents(int numAgents, Vector3 goal) {
     }
 }
 
+void World::removeAgents()
+{
+    for (int a = 0; a < this->agents.size(); a++) {
+        Agent* agent = this->agents[a];
+
+        if (agent->isAtGoal()) {
+            this->agents.erase(this->agents.begin() + a);
+            a -= 1;
+        }
+    }
+}
+
 void World::update() {
     for (auto & marker : this->markers) {
         marker->ResetMarker();
@@ -113,6 +125,8 @@ void World::update() {
     for (int a = 0; a < this->agents.size(); a++) {
         this->agents[a]->clear();
     }
+
+    this->removeAgents();
 }
 
 int World::getCellsCount() {
