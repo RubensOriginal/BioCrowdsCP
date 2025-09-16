@@ -66,8 +66,6 @@ public:
     void exportMarkers(const char* filename);
 
     float getSumOfDistances();
-
-    std::vector<omp_lock_t> locks;
 };
 
 

@@ -9,20 +9,9 @@ World::World(int x, int z) {
 
     this->createCells();
     this->createMarkers();
-
-    std::vector<omp_lock_t> local_locs(this->getMarkersCount());
-
-    this->locks = local_locs;
-
-    for (int i = 0; i < this->getMarkersCount(); i++) {
-        omp_init_lock(&locks[i]);
-    }
 }
 
 World::~World() {
-    for (int i = 0; i < this->getMarkersCount(); i++) {
-        omp_destroy_lock(&locks[i]);
-    }
 
     for (Cell* cell : this->cells) {
         delete cell;
@@ -82,6 +71,8 @@ void World::populateCell(int c, int maxMarkers) {
 
         // Vector3 ->position = ;
         Marker* marker = new Marker((Vector3){x + (2 * cell->getX()), 0,z + (2 * cell->getZ())}, cell);
+
+        omp_init_lock(&marker->lock);
 
         // cell->markersCount++;
         // world->markers[world->markersCount] = marker;

@@ -12,7 +12,7 @@
 
 int main() {
     srand(1);
-    omp_set_num_threads(8);
+    omp_set_num_threads(16);
 
     World* world = new World(100, 100);
 
@@ -31,7 +31,7 @@ int main() {
     starttime = omp_get_wtime(); 
 
     while (!world->allAgentsNextToGoal()) {
-        printf("Count: %d | Distance: %.2f\n", count, world->getSumOfDistances());
+        //printf("Count: %d | Distance: %.2f\n", count, world->getSumOfDistances());
         world->update();
 
         count++;

@@ -4,6 +4,9 @@ project(BioCrowdsCP CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Procura OpenMP
+find_package(OpenMP REQUIRED)
+
 add_executable(BioCrowdsCP
         main.cpp
         World.cpp
@@ -16,5 +19,7 @@ add_executable(BioCrowdsCP
         Cell.h
         Agent.cpp
         Agent.h
-        World.cpp
 )
+
+# Liga o OpenMP ao alvo
+target_link_libraries(BioCrowdsCP PRIVATE OpenMP::OpenMP_CXX)

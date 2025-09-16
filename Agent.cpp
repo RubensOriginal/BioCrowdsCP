@@ -17,6 +17,8 @@ Agent::Agent(Vector3 position, Vector3 goalPosition, Cell *cell, World *world) {
     this->isDenW = false;
     this->denW = 0.0f;
     this->maxSpeed = 1.5f;
+
+    omp_init_lock(&marker_vector_lock);
 }
 
 void Agent::clear() {
@@ -109,21 +111,25 @@ void Agent::FindNearAuxins()
     for (int i = 0; i < this->world->getMarkersCount(); i++) {
         Marker* marker = this->world->getMarker(i);
 
-        omp_set_lock(&this->world->locks[i]);
+        omp_set_lock(&marker->lock);
         float dis = vector3_sqr_magnitude(this->position - marker->position);
 
         if (dis < marker->minDistance && dis <= AGENT_RADIUS * AGENT_RADIUS) {
 
             if (marker->isTaken) {
+                omp_set_lock(&marker->agent->marker_vector_lock);
                 marker->agent->markers.remove(marker);
+                omp_unset_lock(&marker->agent->marker_vector_lock);
             }
 
             marker->isTaken = true;
             marker->agent = this;
             marker->minDistance = dis;
+            omp_set_lock(&this->marker_vector_lock);
             this->markers.push_back(marker);
+            omp_unset_lock(&this->marker_vector_lock);
         }
-        omp_unset_lock(&this->world->locks[i]);
+        omp_unset_lock(&marker->lock);
     }
 }
 

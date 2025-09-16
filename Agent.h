@@ -2,6 +2,7 @@
 #define AGENT_H
 
 #include <list>
+#include <omp.h>
 
 #include "Vector3.h"
 // #include "Marker.h"
@@ -34,6 +35,8 @@ private:
     Vector3 goalPosition{};
     Vector3 dirAgentGoal{};
 public:
+    omp_lock_t marker_vector_lock;
+
     Agent(Vector3 position, Vector3 goalPosition, Cell* cell, World* world);
 
     void clear();

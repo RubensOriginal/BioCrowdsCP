@@ -7,6 +7,8 @@
 #include <stdbool.h>
 
 // #include "Cell.h"
+#include <omp.h>
+
 #include "Agent.h"
 #include "Vector3.h"
 
@@ -29,6 +31,7 @@ public:
 
     void ResetMarker();
 
+    omp_lock_t lock;
     // Vector3 getPosition();
     // float getMinDistance();
 };
