@@ -1,6 +1,8 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include <omp.h>
+
 #include "Agent.h"
 #include "Cell.h"
 #include "Marker.h"
@@ -64,6 +66,8 @@ public:
     void exportMarkers(const char* filename);
 
     float getSumOfDistances();
+
+    std::vector<omp_lock_t> locks;
 };
 
 

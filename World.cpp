@@ -9,9 +9,21 @@ World::World(int x, int z) {
 
     this->createCells();
     this->createMarkers();
+
+    std::vector<omp_lock_t> local_locs(this->getMarkersCount());
+
+    this->locks = local_locs;
+
+    for (int i = 0; i < this->getMarkersCount(); i++) {
+        omp_init_lock(&locks[i]);
+    }
 }
 
 World::~World() {
+    for (int i = 0; i < this->getMarkersCount(); i++) {
+        omp_destroy_lock(&locks[i]);
+    }
+
     for (Cell* cell : this->cells) {
         delete cell;
     }
@@ -109,6 +121,7 @@ void World::update() {
         marker->ResetMarker();
     }
 
+    #pragma omp parallel for schedule(dynamic)
     for (int a = 0; a < this->agents.size(); a++) {
         this->agents[a]->FindNearAuxins();
     }

@@ -109,6 +109,7 @@ void Agent::FindNearAuxins()
     for (int i = 0; i < this->world->getMarkersCount(); i++) {
         Marker* marker = this->world->getMarker(i);
 
+        omp_set_lock(&this->world->locks[i]);
         float dis = vector3_sqr_magnitude(this->position - marker->position);
 
         if (dis < marker->minDistance && dis <= AGENT_RADIUS * AGENT_RADIUS) {
@@ -122,6 +123,7 @@ void Agent::FindNearAuxins()
             marker->minDistance = dis;
             this->markers.push_back(marker);
         }
+        omp_unset_lock(&this->world->locks[i]);
     }
 }
 
