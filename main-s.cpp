@@ -10,36 +10,42 @@
 #define DELTA_TIME 0.1f
 
 int main() {
-    srand(1);
-    World* world = new World(60, 60);
-
-    double starttime, stoptime;
-
-    printf("Cells: %d\n", world->getCellsCount());
-    printf("Markers: %d\n", world->getMarkersCount());
-
-    // world->exportCells("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/cells.csv");
-    // world->exportMarkers("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/markers.csv");
-
-    world->createAgents(30, Vector3{59.0f, 0.0f, 59.0f});
-
-    int count = 0;
-
     auto start = std::chrono::high_resolution_clock::now();
 
-    while (!world->allAgentsNextToGoal()) {
-        // printf("Count: %d | Distance: %.2f\n", count, world->getSumOfDistances());
-        world->update();
 
-        count++;
+    for (int i = 1; i <= 31; i++) {
+        srand(1);
+        World* world = new World(50, 50);
+
+        double starttime, stoptime;
+
+        printf("Cells: %d\n", world->getCellsCount());
+        printf("Markers: %d\n", world->getMarkersCount());
+
+        // world->exportCells("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/cells.csv");
+        // world->exportMarkers("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/markers.csv");
+
+        world->createAgents(25, Vector3{49.0f, 0.0f, 49.0f});
+
+        int count = 0;
+
+
+        while (!world->allAgentsNextToGoal()) {
+            // printf("Count: %d | Distance: %.2f\n", count, world->getSumOfDistances());
+            world->update();
+
+            count++;
+        }
+
+        
+
+        delete world;
     }
 
     auto end = std::chrono::high_resolution_clock::now();
-	
-    std::chrono::duration<double> elapsed = end - start;
-    std::cout << "Execution time: " << elapsed.count() << " seconds\n";
-
-    delete world;
+        
+        std::chrono::duration<double> elapsed = end - start;
+        std::cout << "Execution time: " << elapsed.count() << " seconds\n";
 
     return 0;
 
