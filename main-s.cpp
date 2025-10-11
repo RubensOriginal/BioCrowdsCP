@@ -19,8 +19,8 @@ int main() {
 
         double starttime, stoptime;
 
-        printf("Cells: %d\n", world->getCellsCount());
-        printf("Markers: %d\n", world->getMarkersCount());
+        // printf("Cells: %d\n", world->getCellsCount());
+        // printf("Markers: %d\n", world->getMarkersCount());
 
         // world->exportCells("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/cells.csv");
         // world->exportMarkers("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/markers.csv");
