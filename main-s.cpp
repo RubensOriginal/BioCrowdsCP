@@ -14,7 +14,7 @@ int main() {
 
 
     for (int i = 1; i <= 31; i++) {
-        srand(1);
+        srand(i);
         World* world = new World(50, 50);
 
         double starttime, stoptime;
@@ -25,7 +25,7 @@ int main() {
         // world->exportCells("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/cells.csv");
         // world->exportMarkers("C:/Users/vhlab/CLionProjects/BioCrowdsCP/output/markers.csv");
 
-        world->createAgents(25, Vector3{49.0f, 0.0f, 49.0f});
+        world->createAgents(30, Vector3{49.0f, 0.0f, 49.0f});
 
         int count = 0;
 
