@@ -11,7 +11,7 @@
 #define DELTA_TIME 0.1f
 #define NUM_SIM 31
 
-int main() {
+int main(int argc, char** argv) {
 
     int my_rank;  /* Identificador do processo */
     int proc_n;   /* Número de processos */
